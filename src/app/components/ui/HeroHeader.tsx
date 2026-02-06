@@ -37,9 +37,15 @@ export default function HeroHeader({
           <Text variant="greeting">{greeting}</Text>
 
           {/* Main heading */}
-          <Text variant="h1" as="h1">
-            {headingPrimary} {headingSecondary}
-          </Text>
+          <div>
+            <Text variant="h1" as="span" style={{ color: 'var(--text-default, #1A1F36)' }}>
+              {headingPrimary}
+            </Text>
+            {' '}
+            <Text variant="h1" as="span" style={{ color: 'var(--text-subdued, #596171)' }}>
+              {headingSecondary}
+            </Text>
+          </div>
 
           {/* Button */}
           <HeroButton type="primary" size="large" onClick={onButtonClick}>

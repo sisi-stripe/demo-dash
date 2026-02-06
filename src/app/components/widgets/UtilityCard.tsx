@@ -1,7 +1,7 @@
 import { CardProps } from './types';
 import WidgetButton from './WidgetButton';
 
-export default function QuickActionsCard({ eyebrowTitle, ctaButton, children }: CardProps) {
+export default function UtilityCard({ eyebrowTitle, ctaButton, children }: CardProps) {
   return (
     <div
       className="bg-white border border-gray-200 rounded-lg p-6 flex flex-col transition-shadow duration-200"

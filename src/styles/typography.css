@@ -5,10 +5,11 @@
   color: var(--text-default, #1F2937);
   font-variant-numeric: lining-nums proportional-nums;
   font-family: "SF Pro Display", -apple-system, BlinkMacSystemFont, sans-serif;
-  font-size: 36px;
+  font-size: 28px;
   font-style: normal;
   font-weight: 400;
-  line-height: 120%; /* 43.2px */
+  line-height: 36px; /* 128.571% */
+  letter-spacing: 0.38px;
 }
 
 /* H2 - Secondary heading */

@@ -1,5 +1,5 @@
-import { WelcomeCard, QuickActionsCard, InsightsCard } from '../components/widgets';
-import { Icon, BrandIcon, FlagIcon } from '../../../SailIcons';
+import { WelcomeCard, UtilityCard, InsightsCard } from '../components/widgets';
+import { Icon } from '../../SailIcons';
 
 function HomeContentCards() {
   return (
@@ -15,22 +15,73 @@ function HomeContentCards() {
             }}
           >
             <h2 className="text-xl font-semibold text-gray-900 mb-2">Welcome to Stripe</h2>
-            <p className="text-gray-600">Complete your account setup to activate your first payment method.</p>
+            <p style={{ color: 'var(--text-subdued, #596171)' }}>Complete your account setup to activate your first payment method.</p>
           </WelcomeCard>
         </div>
 
         {/* Card Slot 2 - Takes up 1/3 width */}
         <div>
-          <QuickActionsCard
-            eyebrowTitle="Quick Access"
+          <UtilityCard
+            eyebrowTitle="API Keys"
             ctaButton={{
               icon: "arrowRight",
               onClick: () => console.log("View all clicked")
             }}
           >
-            <h2 className="text-xl font-semibold text-gray-900 mb-2">Quick Actions</h2>
-            <p className="text-gray-600">Access your most used features quickly.</p>
-          </QuickActionsCard>
+            <div className="flex flex-col gap-4">
+              {/* Publishable key */}
+              <div>
+                <h3 style={{
+                  color: 'var(--text-subdued, #596171)',
+                  fontSize: '14px',
+                  fontWeight: 500,
+                  marginBottom: '8px'
+                }}>
+                  Publishable key
+                </h3>
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  padding: '12px 16px',
+                  backgroundColor: 'var(--background-offset, #F5F6F8)',
+                  borderRadius: '8px',
+                  fontFamily: 'monospace',
+                  fontSize: '14px',
+                  color: 'var(--text-default, #1A1F36)'
+                }}>
+                  <span>pk_test_51SZy1bQ5F1kNqNL0Mf••••••••</span>
+                  <Icon name="clipboard" size="small" style={{ color: 'var(--icon-subdued, #6C7688)', cursor: 'pointer' }} />
+                </div>
+              </div>
+
+              {/* Secret key */}
+              <div>
+                <h3 style={{
+                  color: 'var(--text-subdued, #596171)',
+                  fontSize: '14px',
+                  fontWeight: 500,
+                  marginBottom: '8px'
+                }}>
+                  Secret key
+                </h3>
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  padding: '12px 16px',
+                  backgroundColor: 'var(--background-offset, #F5F6F8)',
+                  borderRadius: '8px',
+                  fontFamily: 'monospace',
+                  fontSize: '14px',
+                  color: 'var(--text-default, #1A1F36)'
+                }}>
+                  <span>sk_test_51SZy1bQ5F1kNqNL0wR••••••••</span>
+                  <Icon name="clipboard" size="small" style={{ color: 'var(--icon-subdued, #6C7688)', cursor: 'pointer' }} />
+                </div>
+              </div>
+            </div>
+          </UtilityCard>
         </div>
 
         {/* Card Slot 3 - Wraps to second row */}
@@ -43,7 +94,7 @@ function HomeContentCards() {
             }}
           >
             <h2 className="text-xl font-semibold text-gray-900 mb-2">Business Insights</h2>
-            <p className="text-gray-600">Track your key metrics and performance.</p>
+            <p style={{ color: 'var(--text-subdued, #596171)' }}>Track your key metrics and performance.</p>
           </InsightsCard>
         </div>
       </div>
