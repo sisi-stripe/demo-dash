@@ -4,9 +4,10 @@ import WidgetButton from './WidgetButton';
 export default function UtilityCard({ eyebrowTitle, ctaButton, children }: CardProps) {
   return (
     <div
-      className="bg-white border border-gray-200 rounded-lg p-6 flex flex-col transition-shadow duration-200"
+      className="bg-white border border-gray-200 p-6 flex flex-col transition-shadow duration-200"
       style={{
         minHeight: '272px',
+        borderRadius: 'var(--radius-card, 8px)',
       }}
       onMouseEnter={(e) => {
         e.currentTarget.style.boxShadow = '0 15px 35px 0 rgba(48, 49, 61, 0.08), 0 5px 15px 0 rgba(0, 0, 0, 0.12)';

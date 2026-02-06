@@ -7,8 +7,11 @@ interface ProductCardProps {
 export default function ProductCard({ title, description, image }: ProductCardProps) {
   return (
     <div
-      className="p-4 rounded-lg border border-gray-200 bg-white flex flex-col h-full"
-      style={{ flex: '1 1 0' }}
+      className="p-4 border border-gray-200 bg-white flex flex-col h-full"
+      style={{
+        flex: '1 1 0',
+        borderRadius: 'var(--radius-card, 8px)',
+      }}
     >
       <h3 className="text-label-emphasized">{title}</h3>
       <p className="text-body-small" style={{ color: 'var(--text-subdued, #596171)' }}>

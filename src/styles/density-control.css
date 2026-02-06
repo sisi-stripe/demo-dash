@@ -1,0 +1,72 @@
+/* DensityControl Slider Styling */
+
+/* Webkit browsers (Chrome, Safari, Edge) */
+.density-control input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  background: var(--brand-primary, #635BFF);
+  border: 2px solid white;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s;
+}
+
+.density-control input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+.density-control input[type="range"]::-webkit-slider-thumb:active {
+  transform: scale(1.1);
+}
+
+/* Firefox */
+.density-control input[type="range"]::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  background: var(--brand-primary, #635BFF);
+  border: 2px solid white;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s;
+}
+
+.density-control input[type="range"]::-moz-range-thumb:hover {
+  transform: scale(1.2);
+}
+
+.density-control input[type="range"]::-moz-range-thumb:active {
+  transform: scale(1.1);
+}
+
+/* Focus styles for accessibility */
+.density-control input[type="range"]:focus {
+  outline: 2px solid var(--brand-primary, #635BFF);
+  outline-offset: 2px;
+}
+
+.density-control button:focus-visible {
+  outline: 2px solid var(--brand-primary, #635BFF);
+  outline-offset: 2px;
+}
+
+/* Button hover states */
+.density-control button:not(:disabled):hover {
+  background: var(--background-offset, #F5F6F8);
+  border-color: var(--brand-primary, #635BFF);
+}
+
+.density-control button:not(:disabled):active {
+  transform: scale(0.98);
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .density-control {
+    top: 10px !important;
+    right: 10px !important;
+  }
+}

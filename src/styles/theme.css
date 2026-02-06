@@ -23,7 +23,10 @@
   /* Font families */
   --font-display: 'SF Pro Display', sans-serif;
   --font-text: 'SF Pro Text', sans-serif;
-  
+
+  /* Card spacing - controlled by DensityControl component */
+  --card-spacing: 20px;
+
   /* The default background color for the application. */
   --background: rgba(255, 255, 255, 1.00);
   
