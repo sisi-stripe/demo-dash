@@ -2,7 +2,9 @@
 export { default as WelcomeCard } from './WelcomeCard';
 export { default as UtilityCard } from './UtilityCard';
 export { default as InsightsCard } from './InsightsCard';
+export { default as DiscoveryCard } from './DiscoveryCard';
 export { default as WidgetButton } from './WidgetButton';
+export { default as ProductCard } from './ProductCard';
 
 // Export types
 export type { CardProps } from './types';

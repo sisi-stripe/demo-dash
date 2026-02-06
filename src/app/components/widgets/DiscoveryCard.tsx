@@ -1,13 +1,12 @@
 import { CardProps } from './types';
 import WidgetButton from './WidgetButton';
 
-export default function InsightsCard({ eyebrowTitle, ctaButton, children }: CardProps) {
+export default function DiscoveryCard({ eyebrowTitle, ctaButton, secondaryCtaButton, children }: CardProps) {
   return (
     <div
-      className="bg-white border border-gray-200 rounded-lg p-6 flex flex-col transition-shadow duration-200"
+      className="bg-white border border-gray-200 rounded-lg p-6 flex flex-col transition-shadow duration-200 h-full"
       style={{
         height: '340px',
-        position: 'relative',
       }}
       onMouseEnter={(e) => {
         e.currentTarget.style.boxShadow = '0 15px 35px 0 rgba(48, 49, 61, 0.08), 0 5px 15px 0 rgba(0, 0, 0, 0.12)';
@@ -44,39 +43,20 @@ export default function InsightsCard({ eyebrowTitle, ctaButton, children }: Card
           </div>
         )}
 
-        {ctaButton && (
-          <div className="ml-auto">
-            <WidgetButton onClick={ctaButton.onClick} icon={ctaButton.icon} />
+        {(secondaryCtaButton || ctaButton) && (
+          <div className="ml-auto" style={{ display: 'flex', gap: '4px' }}>
+            {secondaryCtaButton && (
+              <WidgetButton onClick={secondaryCtaButton.onClick} icon={secondaryCtaButton.icon} />
+            )}
+            {ctaButton && (
+              <WidgetButton onClick={ctaButton.onClick} icon={ctaButton.icon} />
+            )}
           </div>
         )}
       </div>
 
       <div className="flex-1 mt-4">
         {children}
-      </div>
-
-      {/* Illustration container - 1/3 of card size, positioned at bottom right */}
-      <div
-        style={{
-          position: 'absolute',
-          bottom: '24px',
-          right: '24px',
-          width: '113px',
-          height: '113px',
-          display: 'flex',
-          justifyContent: 'flex-end',
-          alignItems: 'flex-end',
-        }}
-      >
-        <img
-          src="/src/assets/dataillustration.png"
-          alt="Data illustration"
-          style={{
-            width: '100%',
-            height: '100%',
-            objectFit: 'contain',
-          }}
-        />
       </div>
     </div>
   );

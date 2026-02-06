@@ -14,12 +14,14 @@ export const textStyles = {
 
   // Label and caption styles
   label: 'text-label',
+  labelEmphasized: 'text-label-emphasized',
   caption: 'text-caption',
 
   // Display styles
   displayLarge: 'text-display-large',
   displayMedium: 'text-display-medium',
   d1: 'text-d1',
+  d2: 'text-d2',
 
   // Legacy styles (for backwards compatibility)
   greeting: 'text-label',

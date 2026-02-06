@@ -6,5 +6,9 @@ export interface CardProps {
     icon: string;
     onClick: () => void;
   };
+  secondaryCtaButton?: {
+    icon: string;
+    onClick: () => void;
+  };
   children: ReactNode;
 }
