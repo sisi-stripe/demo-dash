@@ -13,13 +13,11 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-8">
-      <div className="w-[1280px] h-[840px]">
-        <DashboardLayout onNavigate={handleNavigate} currentPage={currentPage}>
-          {currentPage === 'home' && <DashHome />}
-          {currentPage === 'settings' && <SettingsPage />}
-        </DashboardLayout>
-      </div>
+    <div className="w-full h-screen">
+      <DashboardLayout onNavigate={handleNavigate} currentPage={currentPage}>
+        {currentPage === 'home' && <DashHome />}
+        {currentPage === 'settings' && <SettingsPage />}
+      </DashboardLayout>
     </div>
   );
 }

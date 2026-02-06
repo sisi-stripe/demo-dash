@@ -63,10 +63,7 @@ function HomeContentCards() {
     <>
       <DensityControl />
       <div style={{ padding: 'var(--container-padding, 24px)' }}>
-        <div
-          className="HomeContentCardsContainer grid grid-cols-1 md:grid-cols-3"
-          style={{ gap: 'var(--card-spacing, 20px)' }}
-        >
+        <div className="HomeContentCardsContainer grid grid-cols-1 md:grid-cols-3" style={{ gap: 'var(--card-spacing, 20px)' }}>
         {/* Card Slot 1 - Takes up 2/3 width on desktop, full width on mobile */}
         <div className="md:col-span-2">
           <WelcomeCard
@@ -214,7 +211,7 @@ function HomeContentCards() {
 
 export default function HomeContent() {
   return (
-    <div style={{ background: 'var(--background-offset, #F5F6F8)', height: '100%' }}>
+    <div style={{ background: 'var(--background-offset, #F5F6F8)', height: '100svh' }}>
       <HomeContentCards />
     </div>
   );

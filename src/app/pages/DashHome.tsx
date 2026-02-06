@@ -7,7 +7,7 @@ export default function DashHome() {
   };
 
   return (
-    <div data-name="NewUserHomePage" style={{ height: '100%' }}>
+    <div data-name="NewUserHomePage" style={{ height: '100svh' }}>
       <HeroHeader
         greeting="Good morning, Sisi"
         headingPrimary="Welcome to Stripe."

@@ -59,6 +59,7 @@ export default function HeroHeader({
           style={{
             width: '300px',
             padding: '24px',
+            overflow: 'hidden',
           }}
         >
           <ShimmerWave />

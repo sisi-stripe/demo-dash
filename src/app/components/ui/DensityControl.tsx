@@ -237,7 +237,7 @@ export default function DensityControl({
           transition: 'all 0.3s ease-in-out',
         }}
       >
-        {isOpen ? '✕' : <Icon name="settings" size="medium" />}
+        {isOpen ? '✕' : '⚙️'}
       </button>
 
       {/* Control Panel */}

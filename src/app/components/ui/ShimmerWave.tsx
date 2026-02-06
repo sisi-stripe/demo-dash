@@ -18,7 +18,7 @@ export default function ShimmerWave({ className = '' }: ShimmerWaveProps) {
     const updateSize = () => {
       const rect = canvas.getBoundingClientRect();
       canvas.width = rect.width;
-      canvas.height = rect.height;
+      canvas.height = rect.height * 0.8; // Reduce height by 20%
     };
     updateSize();
     window.addEventListener('resize', updateSize);
@@ -27,27 +27,31 @@ export default function ShimmerWave({ className = '' }: ShimmerWaveProps) {
     const particles: Array<{
       x: number;
       y: number;
+      baseX: number;
       baseY: number;
       size: number;
-      speed: number;
-      offset: number;
+      delayX: number;
+      delayY: number;
     }> = [];
 
-    // Create particle grid (25x25)
-    const cols = 25;
-    const rows = 25;
+    // Create particle grid (20x20)
+    const cols = 20;
+    const rows = 20;
     const spacingX = canvas.width / cols;
     const spacingY = canvas.height / rows;
+    const xDelayFactor = 0.3;
+    const yDelayFactor = 0.2;
 
     for (let i = 0; i < cols; i++) {
       for (let j = 0; j < rows; j++) {
         particles.push({
           x: i * spacingX + spacingX / 2,
           y: j * spacingY + spacingY / 2,
+          baseX: i * spacingX + spacingX / 2,
           baseY: j * spacingY + spacingY / 2,
-          size: 3,
-          speed: 0.4,
-          offset: 0,
+          size: 2.4,
+          delayX: i * xDelayFactor,
+          delayY: j * yDelayFactor,
         });
       }
     }
@@ -59,40 +63,31 @@ export default function ShimmerWave({ className = '' }: ShimmerWaveProps) {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       time += 0.01;
 
+      const animationDuration = 24; // 24 seconds for full cycle
+      const totalRotations = 4; // 1440 degrees = 4 full rotations
+      const orbitRadius = Math.min(spacingX, spacingY) * 0.4;
+
       particles.forEach((particle) => {
-        // Wave motion
-        const waveY = Math.sin(time * particle.speed + particle.offset + particle.x * 0.01) * 3;
-        const waveX = Math.cos(time * particle.speed + particle.offset + particle.y * 0.01) * 2;
+        // Calculate delay based on X and Y position
+        const delay = particle.delayX + particle.delayY;
 
-        // Scale wave that moves across the canvas from left to right
-        const waveSpeed = 50;
-        const waveProgress = (time * waveSpeed) % (canvas.width + canvas.width * 0.5);
-        const distanceFromWave = Math.abs(particle.x - waveProgress);
-        const waveWidth = canvas.width * 0.2;
-        const scaleAmount = distanceFromWave < waveWidth
-          ? (1 - distanceFromWave / waveWidth)
-          : 0;
-        const scale = 1 + scaleAmount * 3;
+        // Calculate rotation angle with delay (negative delay as in CSS)
+        const angle = ((time / animationDuration) * Math.PI * 2 * totalRotations - delay) % (Math.PI * 2 * totalRotations);
 
-        // Interpolate color from purple to red based on scale
-        // Purple: #9A9AFE (154, 154, 254) -> Red: #FF0000 (255, 0, 0)
-        const r = Math.round(154 + scaleAmount * (255 - 154));
-        const g = Math.round(154 - scaleAmount * 154);
-        const b = Math.round(254 - scaleAmount * 254);
+        // Calculate circular position around base point
+        const offsetX = Math.cos(angle) * orbitRadius;
+        const offsetY = Math.sin(angle) * orbitRadius;
+
+        const x = particle.baseX + offsetX;
+        const y = particle.baseY + offsetY;
 
         // Shimmer effect (opacity variation)
-        const shimmer = 0.3 + Math.sin(time * 2 + particle.offset) * 0.15;
+        const shimmer = 0.5 + Math.sin(time * 2) * 0.2;
 
-        // Draw particle with scale and color transition
-        ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${shimmer})`;
+        // Draw particle in blurple (#9A9AFE)
+        ctx.fillStyle = `rgba(154, 154, 254, ${shimmer})`;
         ctx.beginPath();
-        ctx.arc(
-          particle.x + waveX,
-          particle.baseY + waveY,
-          particle.size * scale,
-          0,
-          Math.PI * 2
-        );
+        ctx.arc(x, y, particle.size, 0, Math.PI * 2);
         ctx.fill();
       });
 
