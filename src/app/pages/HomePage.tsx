@@ -2,37 +2,40 @@ import { useState } from 'react';
 import { WelcomeCard, UtilityCard, InsightsCard, DiscoveryCard, ProductCard } from '../components/widgets';
 import { Icon } from '../../SailIcons';
 import DensityControl from '../components/ui/DensityControl';
+import terminalImg from '../../assets/terminal.png';
+import taxRegistrationImg from '../../assets/taxregistration.png';
+import invoiceImg from '../../assets/invoice.png';
 
 const productData = [
   {
     title: "In-person payments",
     description: "Build your ideal point of sale with Terminal.",
-    image: "/src/assets/terminal.png"
+    image: terminalImg
   },
   {
     title: "Add a tax registration",
     description: "Use Stripe to register with local tax authorities.",
-    image: "/src/assets/taxregistration.png"
+    image: taxRegistrationImg
   },
   {
     title: "Send invoices",
     description: "Create test invoices for your customers.",
-    image: "/src/assets/invoice.png"
+    image: invoiceImg
   },
   {
     title: "Payment Links",
     description: "Create and share payment links with your customers.",
-    image: "/src/assets/terminal.png"
+    image: terminalImg
   },
   {
     title: "Subscriptions",
     description: "Set up recurring billing for your customers.",
-    image: "/src/assets/taxregistration.png"
+    image: taxRegistrationImg
   },
   {
     title: "Connect",
     description: "Build a marketplace or platform with Stripe Connect.",
-    image: "/src/assets/invoice.png"
+    image: invoiceImg
   }
 ];
 

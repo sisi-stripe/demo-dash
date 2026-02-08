@@ -1,5 +1,6 @@
 import { CardProps } from './types';
 import WidgetButton from './WidgetButton';
+import dataIllustration from '../../../assets/dataillustration.png';
 
 export default function InsightsCard({ eyebrowTitle, ctaButton, children }: CardProps) {
   return (
@@ -70,7 +71,7 @@ export default function InsightsCard({ eyebrowTitle, ctaButton, children }: Card
         }}
       >
         <img
-          src="/src/assets/dataillustration.png"
+          src={dataIllustration}
           alt="Data illustration"
           style={{
             width: '100%',
