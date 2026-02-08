@@ -10,5 +10,6 @@ export interface CardProps {
     icon: string;
     onClick: () => void;
   };
+  onClick?: () => void;
   children: ReactNode;
 }

@@ -39,7 +39,11 @@ const productData = [
   }
 ];
 
-function HomeContentCards() {
+interface HomeContentCardsProps {
+  onWelcomeCardClick?: () => void;
+}
+
+function HomeContentCards({ onWelcomeCardClick }: HomeContentCardsProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const visibleCards = 3;
 
@@ -70,14 +74,61 @@ function HomeContentCards() {
         {/* Card Slot 1 - Takes up 2/3 width on desktop, full width on mobile */}
         <div className="md:col-span-2">
           <WelcomeCard
-            eyebrowTitle="Getting Started"
+            eyebrowTitle="Get Started"
             ctaButton={{
               icon: "arrowRight",
               onClick: () => console.log("Set up payments clicked")
             }}
+            onClick={onWelcomeCardClick}
           >
-            <h2 className="text-xl font-semibold text-gray-900 mb-2">Welcome to Stripe</h2>
-            <p style={{ color: 'var(--text-subdued, #596171)' }}>Complete your account setup to activate your first payment method.</p>
+            <div style={{
+              color: 'var(--text-default, #1A1F36)',
+              fontVariantNumeric: 'lining-nums proportional-nums',
+              fontFamily: '"SF Pro Display"',
+              fontSize: '24px',
+              fontStyle: 'normal',
+              fontWeight: 400,
+              lineHeight: '32px',
+              letterSpacing: '0.3px',
+            }}>
+              Selling plants online for a plant <span style={{ position: 'relative', display: 'inline-block' }}>
+                <style>
+                  {`
+                    @keyframes expandWidth {
+                      from {
+                        width: 0%;
+                      }
+                      to {
+                        width: 100%;
+                      }
+                    }
+                  `}
+                </style>
+                <span style={{
+                  position: 'absolute',
+                  background: 'var(--brand-200, #C3B6FB)',
+                  height: '22px',
+                  left: 0,
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  zIndex: 0,
+                  animation: 'expandWidth 1s ease-out forwards',
+                }}>
+                </span>
+                <span style={{
+                  position: 'relative',
+                  zIndex: 1,
+                  color: 'var(--text-default, #1A1F36)',
+                  fontVariantNumeric: 'lining-nums proportional-nums',
+                  fontFamily: '"SF Pro Display"',
+                  fontSize: '24px',
+                  fontStyle: 'normal',
+                  fontWeight: 700,
+                  lineHeight: '32px',
+                  letterSpacing: '0.3px',
+                }}>subscription</span>
+              </span> service.
+            </div>
           </WelcomeCard>
         </div>
 
@@ -107,7 +158,7 @@ function HomeContentCards() {
                   justifyContent: 'space-between',
                   padding: '12px 16px',
                   backgroundColor: 'var(--background-offset, #F5F6F8)',
-                  borderRadius: '8px',
+                  borderRadius: '6px',
                   fontFamily: 'monospace',
                   fontSize: '14px',
                   color: 'var(--text-default, #1A1F36)',
@@ -140,7 +191,7 @@ function HomeContentCards() {
                   justifyContent: 'space-between',
                   padding: '12px 16px',
                   backgroundColor: 'var(--background-offset, #F5F6F8)',
-                  borderRadius: '8px',
+                  borderRadius: '6px',
                   fontFamily: 'monospace',
                   fontSize: '14px',
                   color: 'var(--text-default, #1A1F36)',
@@ -212,10 +263,14 @@ function HomeContentCards() {
   );
 }
 
-export default function HomeContent() {
+interface HomeContentProps {
+  onWelcomeCardClick?: () => void;
+}
+
+export default function HomeContent({ onWelcomeCardClick }: HomeContentProps) {
   return (
     <div style={{ background: 'var(--background-offset, #F5F6F8)', height: '100svh' }}>
-      <HomeContentCards />
+      <HomeContentCards onWelcomeCardClick={onWelcomeCardClick} />
     </div>
   );
 }

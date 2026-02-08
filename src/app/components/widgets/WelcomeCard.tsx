@@ -1,14 +1,17 @@
 import { CardProps } from './types';
 import WidgetButton from './WidgetButton';
 
-export default function WelcomeCard({ eyebrowTitle, ctaButton, children }: CardProps) {
+export default function WelcomeCard({ eyebrowTitle, ctaButton, onClick, children }: CardProps) {
   return (
     <div
       className="bg-white border border-gray-200 p-6 flex flex-col transition-shadow duration-200"
       style={{
         minHeight: '272px',
         borderRadius: 'var(--radius-card, 8px)',
+        gap: '20px',
+        cursor: onClick ? 'pointer' : 'default',
       }}
+      onClick={onClick}
       onMouseEnter={(e) => {
         e.currentTarget.style.boxShadow = '0 15px 35px 0 rgba(48, 49, 61, 0.08), 0 5px 15px 0 rgba(0, 0, 0, 0.12)';
       }}
@@ -51,7 +54,19 @@ export default function WelcomeCard({ eyebrowTitle, ctaButton, children }: CardP
         )}
       </div>
 
-      <div className="flex-1 mt-4">
+      <div className="h-full" style={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        gap: '16px',
+        flex: '1 0 0',
+        alignSelf: 'stretch',
+        borderRadius: '8px',
+        background: 'var(--background-offset, #F5F6F8)',
+        padding: '24px',
+        height: '100%',
+      }}>
         {children}
       </div>
     </div>

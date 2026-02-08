@@ -26,7 +26,7 @@ export default function HeroHeader({
       <div className="flex items-start justify-between">
         {/* Left content container */}
         <div
-          className="flex flex-col items-start gap-[32px] shrink-0"
+          className="flex flex-col items-start gap-[20px] shrink-0"
           style={{
             width: '760px',
             height: '278px',
