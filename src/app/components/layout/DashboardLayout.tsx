@@ -2,6 +2,7 @@ import { ReactNode } from 'react';
 import Header from './Header';
 import SideNav from './SideNav';
 import TopBar from './TopBar';
+import DensityControl from '../ui/DensityControl';
 
 interface DashboardLayoutProps {
   children: ReactNode;
@@ -22,6 +23,8 @@ export default function DashboardLayout({ children, onNavigate, currentPage }: D
           </div>
         </div>
       </div>
+      {/* DensityControl available across all pages */}
+      <DensityControl />
     </div>
   );
 }

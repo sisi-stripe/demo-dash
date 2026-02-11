@@ -13,7 +13,7 @@ export default function WelcomeCard({ eyebrowTitle, ctaButton, onClick, children
       }}
       onClick={onClick}
       onMouseEnter={(e) => {
-        e.currentTarget.style.boxShadow = '0 15px 35px 0 rgba(48, 49, 61, 0.08), 0 5px 15px 0 rgba(0, 0, 0, 0.12)';
+        e.currentTarget.style.boxShadow = '0 4px 12px 0 rgba(48, 49, 61, 0.06), 0 2px 4px 0 rgba(0, 0, 0, 0.08)';
       }}
       onMouseLeave={(e) => {
         e.currentTarget.style.boxShadow = 'none';

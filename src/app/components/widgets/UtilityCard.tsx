@@ -7,10 +7,11 @@ export default function UtilityCard({ eyebrowTitle, ctaButton, children }: CardP
       className="bg-white border border-gray-200 p-6 flex flex-col transition-shadow duration-200"
       style={{
         minHeight: '272px',
+        height: '100%',
         borderRadius: 'var(--radius-card, 8px)',
       }}
       onMouseEnter={(e) => {
-        e.currentTarget.style.boxShadow = '0 15px 35px 0 rgba(48, 49, 61, 0.08), 0 5px 15px 0 rgba(0, 0, 0, 0.12)';
+        e.currentTarget.style.boxShadow = '0 4px 12px 0 rgba(48, 49, 61, 0.06), 0 2px 4px 0 rgba(0, 0, 0, 0.08)';
       }}
       onMouseLeave={(e) => {
         e.currentTarget.style.boxShadow = 'none';

@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { Icon } from '../../../SailIcons';
 
 interface DensityControlProps {
@@ -46,6 +46,8 @@ export default function DensityControl({
   const [spacing, setSpacing] = useState(defaultValue);
   const [padding, setPadding] = useState(paddingDefaultValue);
   const [radius, setRadius] = useState(radiusDefaultValue);
+  const [isActiveUser, setIsActiveUser] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   // Load spacing from localStorage on mount
   useEffect(() => {
@@ -79,6 +81,22 @@ export default function DensityControl({
       }
     }
   }, [radiusStorageKey, radiusMin, radiusMax]);
+
+  // Load user mode from localStorage on mount
+  useEffect(() => {
+    const stored = localStorage.getItem('userMode');
+    if (stored === 'active') {
+      setIsActiveUser(true);
+    }
+  }, []);
+
+  // Update localStorage and dispatch event whenever user mode changes
+  useEffect(() => {
+    const mode = isActiveUser ? 'active' : 'new';
+    localStorage.setItem('userMode', mode);
+    // Dispatch custom event for App.tsx to listen
+    window.dispatchEvent(new CustomEvent('userModeChange', { detail: { mode } }));
+  }, [isActiveUser]);
 
   // Update CSS variable whenever spacing changes
   useEffect(() => {
@@ -150,6 +168,23 @@ export default function DensityControl({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
+  // Close panel when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isOpen]);
+
   const handleIncrement = useCallback(() => {
     setSpacing(prev => Math.min(max, prev + step));
   }, [max, step]);
@@ -208,11 +243,12 @@ export default function DensityControl({
 
   return (
     <div
+      ref={containerRef}
       className="density-control"
       style={{
         position: 'fixed',
-        top: '20px',
-        right: '20px',
+        bottom: '20px',
+        left: '20px',
         zIndex: 1000,
       }}
     >
@@ -225,49 +261,110 @@ export default function DensityControl({
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          width: isOpen ? '100%' : '44px',
-          height: '44px',
-          padding: '12px',
+          width: '32px',
+          height: '32px',
+          padding: '8px',
           background: 'white',
           border: '1px solid var(--border-default, #E3E8EF)',
-          borderRadius: '8px',
+          borderRadius: '6px',
           cursor: 'pointer',
-          fontSize: '18px',
-          boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+          fontSize: '14px',
+          boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
           transition: 'all 0.3s ease-in-out',
         }}
       >
-        {isOpen ? '✕' : '⚙️'}
+        <Icon name="settings" size="xsmall" />
       </button>
 
       {/* Control Panel */}
       <div
         style={{
-          maxHeight: isOpen ? '600px' : '0',
+          maxHeight: isOpen ? '550px' : '0',
           opacity: isOpen ? 1 : 0,
           overflow: 'hidden',
-          marginTop: isOpen ? '8px' : '0',
-          padding: isOpen ? '16px' : '0',
+          marginTop: isOpen ? '6px' : '0',
+          padding: isOpen ? '12px' : '0',
           background: 'white',
           border: '1px solid var(--border-default, #E3E8EF)',
-          borderRadius: '8px',
-          boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+          borderRadius: '6px',
+          boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
           transition: 'all 0.3s ease-in-out',
-          width: '240px',
+          width: '210px',
         }}
         aria-hidden={!isOpen}
       >
-        <div style={{ marginBottom: '12px' }}>
+        {/* User Mode Toggle */}
+        <div style={{
+          marginBottom: '16px',
+          paddingBottom: '16px',
+          borderBottom: '1px solid var(--border-default, #E3E8EF)',
+        }}>
+          <label style={{
+            fontSize: '11px',
+            fontWeight: 600,
+            color: 'var(--text-default, #1A1F36)',
+            marginBottom: '8px',
+            display: 'block'
+          }}>
+            User Mode
+          </label>
+          <div style={{
+            display: 'flex',
+            background: 'var(--background-offset, #F5F6F8)',
+            borderRadius: '6px',
+            padding: '2px',
+            position: 'relative',
+          }}>
+            <button
+              onClick={() => setIsActiveUser(false)}
+              style={{
+                flex: 1,
+                padding: '6px 8px',
+                fontSize: '11px',
+                fontWeight: 500,
+                border: 'none',
+                borderRadius: '4px',
+                background: !isActiveUser ? 'white' : 'transparent',
+                color: !isActiveUser ? 'var(--text-default, #1A1F36)' : 'var(--text-subdued, #596171)',
+                cursor: 'pointer',
+                transition: 'all 0.2s',
+                boxShadow: !isActiveUser ? '0 1px 3px rgba(0,0,0,0.1)' : 'none',
+              }}
+            >
+              New User
+            </button>
+            <button
+              onClick={() => setIsActiveUser(true)}
+              style={{
+                flex: 1,
+                padding: '6px 8px',
+                fontSize: '11px',
+                fontWeight: 500,
+                border: 'none',
+                borderRadius: '4px',
+                background: isActiveUser ? 'white' : 'transparent',
+                color: isActiveUser ? 'var(--text-default, #1A1F36)' : 'var(--text-subdued, #596171)',
+                cursor: 'pointer',
+                transition: 'all 0.2s',
+                boxShadow: isActiveUser ? '0 1px 3px rgba(0,0,0,0.1)' : 'none',
+              }}
+            >
+              Active User
+            </button>
+          </div>
+        </div>
+
+        <div style={{ marginBottom: '8px' }}>
           <div style={{
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            marginBottom: '8px'
+            marginBottom: '6px'
           }}>
             <label
               htmlFor="density-slider"
               style={{
-                fontSize: '14px',
+                fontSize: '11px',
                 fontWeight: 600,
                 color: 'var(--text-default, #1A1F36)'
               }}
@@ -275,7 +372,7 @@ export default function DensityControl({
               Card Spacing
             </label>
             <span style={{
-              fontSize: '14px',
+              fontSize: '11px',
               fontWeight: 500,
               color: 'var(--text-subdued, #596171)',
               fontFamily: 'monospace'
@@ -296,7 +393,7 @@ export default function DensityControl({
             aria-label={`Adjust spacing: ${spacing}${unit}`}
             style={{
               width: '100%',
-              height: '4px',
+              height: '3px',
               background: 'linear-gradient(to right, var(--brand-primary, #635BFF) 0%, var(--brand-primary, #635BFF) ' + ((spacing - min) / (max - min) * 100) + '%, var(--border-default, #E3E8EF) ' + ((spacing - min) / (max - min) * 100) + '%, var(--border-default, #E3E8EF) 100%)',
               borderRadius: '2px',
               outline: 'none',
@@ -310,8 +407,8 @@ export default function DensityControl({
         {/* Control Buttons */}
         <div style={{
           display: 'flex',
-          gap: '8px',
-          marginBottom: '12px'
+          gap: '6px',
+          marginBottom: '8px'
         }}>
           <button
             onClick={handleDecrement}
@@ -319,12 +416,12 @@ export default function DensityControl({
             aria-label="Decrease spacing"
             style={{
               flex: 1,
-              height: '44px',
-              padding: '8px',
+              height: '28px',
+              padding: '4px',
               background: spacing <= min ? 'var(--background-offset, #F5F6F8)' : 'white',
               border: '1px solid var(--border-default, #E3E8EF)',
-              borderRadius: '6px',
-              fontSize: '18px',
+              borderRadius: '4px',
+              fontSize: '14px',
               cursor: spacing <= min ? 'not-allowed' : 'pointer',
               opacity: spacing <= min ? 0.5 : 1,
               transition: 'all 0.2s',
@@ -338,12 +435,12 @@ export default function DensityControl({
             aria-label="Increase spacing"
             style={{
               flex: 1,
-              height: '44px',
-              padding: '8px',
+              height: '28px',
+              padding: '4px',
               background: spacing >= max ? 'var(--background-offset, #F5F6F8)' : 'white',
               border: '1px solid var(--border-default, #E3E8EF)',
-              borderRadius: '6px',
-              fontSize: '18px',
+              borderRadius: '4px',
+              fontSize: '14px',
               cursor: spacing >= max ? 'not-allowed' : 'pointer',
               opacity: spacing >= max ? 0.5 : 1,
               transition: 'all 0.2s',
@@ -355,21 +452,21 @@ export default function DensityControl({
 
         {/* Padding Control Section */}
         <div style={{
-          marginTop: '20px',
-          paddingTop: '20px',
+          marginTop: '16px',
+          paddingTop: '16px',
           borderTop: '1px solid var(--border-default, #E3E8EF)',
-          marginBottom: '12px'
+          marginBottom: '8px'
         }}>
           <div style={{
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            marginBottom: '8px'
+            marginBottom: '6px'
           }}>
             <label
               htmlFor="padding-slider"
               style={{
-                fontSize: '14px',
+                fontSize: '11px',
                 fontWeight: 600,
                 color: 'var(--text-default, #1A1F36)'
               }}
@@ -377,7 +474,7 @@ export default function DensityControl({
               Container Padding
             </label>
             <span style={{
-              fontSize: '14px',
+              fontSize: '11px',
               fontWeight: 500,
               color: 'var(--text-subdued, #596171)',
               fontFamily: 'monospace'
@@ -398,7 +495,7 @@ export default function DensityControl({
             aria-label={`Adjust padding: ${padding}${unit}`}
             style={{
               width: '100%',
-              height: '4px',
+              height: '3px',
               background: 'linear-gradient(to right, var(--brand-primary, #635BFF) 0%, var(--brand-primary, #635BFF) ' + ((padding - paddingMin) / (paddingMax - paddingMin) * 100) + '%, var(--border-default, #E3E8EF) ' + ((padding - paddingMin) / (paddingMax - paddingMin) * 100) + '%, var(--border-default, #E3E8EF) 100%)',
               borderRadius: '2px',
               outline: 'none',
@@ -411,8 +508,8 @@ export default function DensityControl({
           {/* Padding Control Buttons */}
           <div style={{
             display: 'flex',
-            gap: '8px',
-            marginTop: '12px'
+            gap: '6px',
+            marginTop: '8px'
           }}>
             <button
               onClick={handlePaddingDecrement}
@@ -420,12 +517,12 @@ export default function DensityControl({
               aria-label="Decrease padding"
               style={{
                 flex: 1,
-                height: '44px',
-                padding: '8px',
+                height: '28px',
+                padding: '4px',
                 background: padding <= paddingMin ? 'var(--background-offset, #F5F6F8)' : 'white',
                 border: '1px solid var(--border-default, #E3E8EF)',
-                borderRadius: '6px',
-                fontSize: '18px',
+                borderRadius: '4px',
+                fontSize: '14px',
                 cursor: padding <= paddingMin ? 'not-allowed' : 'pointer',
                 opacity: padding <= paddingMin ? 0.5 : 1,
                 transition: 'all 0.2s',
@@ -439,12 +536,12 @@ export default function DensityControl({
               aria-label="Increase padding"
               style={{
                 flex: 1,
-                height: '44px',
-                padding: '8px',
+                height: '28px',
+                padding: '4px',
                 background: padding >= paddingMax ? 'var(--background-offset, #F5F6F8)' : 'white',
                 border: '1px solid var(--border-default, #E3E8EF)',
-                borderRadius: '6px',
-                fontSize: '18px',
+                borderRadius: '4px',
+                fontSize: '14px',
                 cursor: padding >= paddingMax ? 'not-allowed' : 'pointer',
                 opacity: padding >= paddingMax ? 0.5 : 1,
                 transition: 'all 0.2s',
@@ -457,21 +554,21 @@ export default function DensityControl({
 
         {/* Border Radius Control Section */}
         <div style={{
-          marginTop: '20px',
-          paddingTop: '20px',
+          marginTop: '16px',
+          paddingTop: '16px',
           borderTop: '1px solid var(--border-default, #E3E8EF)',
-          marginBottom: '12px'
+          marginBottom: '8px'
         }}>
           <div style={{
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            marginBottom: '8px'
+            marginBottom: '6px'
           }}>
             <label
               htmlFor="radius-slider"
               style={{
-                fontSize: '14px',
+                fontSize: '11px',
                 fontWeight: 600,
                 color: 'var(--text-default, #1A1F36)'
               }}
@@ -479,7 +576,7 @@ export default function DensityControl({
               Card Border Radius
             </label>
             <span style={{
-              fontSize: '14px',
+              fontSize: '11px',
               fontWeight: 500,
               color: 'var(--text-subdued, #596171)',
               fontFamily: 'monospace'
@@ -500,7 +597,7 @@ export default function DensityControl({
             aria-label={`Adjust radius: ${radius}${unit}`}
             style={{
               width: '100%',
-              height: '4px',
+              height: '3px',
               background: 'linear-gradient(to right, var(--brand-primary, #635BFF) 0%, var(--brand-primary, #635BFF) ' + ((radius - radiusMin) / (radiusMax - radiusMin) * 100) + '%, var(--border-default, #E3E8EF) ' + ((radius - radiusMin) / (radiusMax - radiusMin) * 100) + '%, var(--border-default, #E3E8EF) 100%)',
               borderRadius: '2px',
               outline: 'none',
@@ -513,8 +610,8 @@ export default function DensityControl({
           {/* Radius Control Buttons */}
           <div style={{
             display: 'flex',
-            gap: '8px',
-            marginTop: '12px'
+            gap: '6px',
+            marginTop: '8px'
           }}>
             <button
               onClick={handleRadiusDecrement}
@@ -522,12 +619,12 @@ export default function DensityControl({
               aria-label="Decrease radius"
               style={{
                 flex: 1,
-                height: '44px',
-                padding: '8px',
+                height: '28px',
+                padding: '4px',
                 background: radius <= radiusMin ? 'var(--background-offset, #F5F6F8)' : 'white',
                 border: '1px solid var(--border-default, #E3E8EF)',
-                borderRadius: '6px',
-                fontSize: '18px',
+                borderRadius: '4px',
+                fontSize: '14px',
                 cursor: radius <= radiusMin ? 'not-allowed' : 'pointer',
                 opacity: radius <= radiusMin ? 0.5 : 1,
                 transition: 'all 0.2s',
@@ -541,12 +638,12 @@ export default function DensityControl({
               aria-label="Increase radius"
               style={{
                 flex: 1,
-                height: '44px',
-                padding: '8px',
+                height: '28px',
+                padding: '4px',
                 background: radius >= radiusMax ? 'var(--background-offset, #F5F6F8)' : 'white',
                 border: '1px solid var(--border-default, #E3E8EF)',
-                borderRadius: '6px',
-                fontSize: '18px',
+                borderRadius: '4px',
+                fontSize: '14px',
                 cursor: radius >= radiusMax ? 'not-allowed' : 'pointer',
                 opacity: radius >= radiusMax ? 0.5 : 1,
                 transition: 'all 0.2s',
@@ -563,12 +660,12 @@ export default function DensityControl({
           aria-label="Reset all to defaults"
           style={{
             width: '100%',
-            height: '44px',
-            padding: '8px 16px',
+            height: '36px',
+            padding: '6px 12px',
             background: 'white',
             border: '1px solid var(--border-default, #E3E8EF)',
-            borderRadius: '6px',
-            fontSize: '14px',
+            borderRadius: '4px',
+            fontSize: '12px',
             fontWeight: 500,
             color: 'var(--text-default, #1A1F36)',
             cursor: 'pointer',
@@ -580,10 +677,10 @@ export default function DensityControl({
 
         {/* Keyboard Hint */}
         <div style={{
-          marginTop: '12px',
-          paddingTop: '12px',
+          marginTop: '8px',
+          paddingTop: '8px',
           borderTop: '1px solid var(--border-default, #E3E8EF)',
-          fontSize: '12px',
+          fontSize: '10px',
           color: 'var(--text-subdued, #596171)',
           textAlign: 'center'
         }}>
@@ -592,7 +689,7 @@ export default function DensityControl({
             background: 'var(--background-offset, #F5F6F8)',
             borderRadius: '4px',
             fontFamily: 'monospace',
-            fontSize: '11px'
+            fontSize: '10px'
           }}>Ctrl+D</kbd> to toggle
         </div>
       </div>

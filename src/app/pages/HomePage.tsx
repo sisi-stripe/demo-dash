@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { WelcomeCard, UtilityCard, InsightsCard, DiscoveryCard, ProductCard } from '../components/widgets';
 import { Icon } from '../../SailIcons';
-import DensityControl from '../components/ui/DensityControl';
 import terminalImg from '../../assets/terminal.png';
 import taxRegistrationImg from '../../assets/taxregistration.png';
 import invoiceImg from '../../assets/invoice.png';
@@ -68,7 +67,6 @@ function HomeContentCards({ onWelcomeCardClick }: HomeContentCardsProps) {
 
   return (
     <>
-      <DensityControl />
       <div style={{ padding: 'var(--container-padding, 24px)' }}>
         <div className="HomeContentCardsContainer grid grid-cols-1 md:grid-cols-3" style={{ gap: 'var(--card-spacing, 20px)' }}>
         {/* Card Slot 1 - Takes up 2/3 width on desktop, full width on mobile */}
